@@ -3,15 +3,20 @@ package com.nurkholiq.mvvm_curd_room
 import androidx.databinding.Bindable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.nurkholiq.mvvm_curd_room.db.Subscriber
 import com.nurkholiq.mvvm_curd_room.db.SubscriberRepository
+import kotlinx.coroutines.launch
 
 class SubscriberViewModel(private val repository: SubscriberRepository) : ViewModel() {
 
-    @Bindable
-    val inputName = MutableLiveData<String>()
+    val subscribers = repository.subscribers
 
     @Bindable
-    val inputEmail = MutableLiveData<String>()
+    val inputName = MutableLiveData<String?>()
+
+    @Bindable
+    val inputEmail = MutableLiveData<String?>()
 
     @Bindable
     val saveOrUpdateButtonText = MutableLiveData<String>()
@@ -25,11 +30,32 @@ class SubscriberViewModel(private val repository: SubscriberRepository) : ViewMo
     }
 
     fun saveOrUpdate() {
+        val name = inputName.value!!
+        val email = inputEmail.value!!
+        insert(Subscriber(0, name, email))
+        inputName.value = null
+        inputEmail.value = null
 
     }
 
-    fun clearAllOrDelete(){
+    fun clearAllOrDelete() {
+        clearAll()
+    }
 
+    fun insert(subscriber: Subscriber) = viewModelScope.launch {
+        repository.insert(subscriber)
+    }
+
+    fun update(subscriber: Subscriber) = viewModelScope.launch {
+        repository.update(subscriber)
+    }
+
+    fun delete(subscriber: Subscriber) = viewModelScope.launch {
+        repository.delete(subscriber)
+    }
+
+    fun clearAll() = viewModelScope.launch {
+        repository.deleteAll()
     }
 
 }
