@@ -2,7 +2,9 @@ package com.nurkholiq.mvvm_curd_room
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.nurkholiq.mvvm_curd_room.databinding.ActivityMainBinding
 import com.nurkholiq.mvvm_curd_room.db.SubscriberDatabase
@@ -24,5 +26,12 @@ class MainActivity : AppCompatActivity() {
         subscriberViewModel = ViewModelProvider(this, factory).get(SubscriberViewModel::class.java)
         binding.myViewModel = subscriberViewModel
         binding.lifecycleOwner = this
+        displaySubscribersList()
+    }
+
+    private fun displaySubscribersList() {
+        subscriberViewModel.subscribers.observe(this, Observer {
+            Log.i("MYTAG", it.toString())
+        })
     }
 }

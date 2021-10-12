@@ -1,6 +1,7 @@
 package com.nurkholiq.mvvm_curd_room
 
 import androidx.databinding.Bindable
+import androidx.databinding.Observable
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,7 +9,7 @@ import com.nurkholiq.mvvm_curd_room.db.Subscriber
 import com.nurkholiq.mvvm_curd_room.db.SubscriberRepository
 import kotlinx.coroutines.launch
 
-class SubscriberViewModel(private val repository: SubscriberRepository) : ViewModel() {
+class SubscriberViewModel(private val repository: SubscriberRepository) : ViewModel(), Observable {
 
     val subscribers = repository.subscribers
 
@@ -56,6 +57,14 @@ class SubscriberViewModel(private val repository: SubscriberRepository) : ViewMo
 
     fun clearAll() = viewModelScope.launch {
         repository.deleteAll()
+    }
+
+    override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+
+    }
+
+    override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) {
+
     }
 
 }
