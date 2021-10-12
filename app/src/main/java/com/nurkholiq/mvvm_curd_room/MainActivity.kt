@@ -3,11 +3,13 @@ package com.nurkholiq.mvvm_curd_room
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nurkholiq.mvvm_curd_room.databinding.ActivityMainBinding
+import com.nurkholiq.mvvm_curd_room.db.Subscriber
 import com.nurkholiq.mvvm_curd_room.db.SubscriberDatabase
 import com.nurkholiq.mvvm_curd_room.db.SubscriberRepository
 
@@ -38,7 +40,11 @@ class MainActivity : AppCompatActivity() {
     private fun displaySubscribersList() {
         subscriberViewModel.subscribers.observe(this, Observer {
             Log.i("MYTAG", it.toString())
-            binding.subscriberRecyclerView.adapter = MyRecyclerViewAdapter(it)
+            binding.subscriberRecyclerView.adapter = MyRecyclerViewAdapter(it, {selectedItem: Subscriber -> listItemClicked(selectedItem)})
         })
+    }
+
+    private fun listItemClicked(subscriber: Subscriber){
+        Toast.makeText(this, "selected name is ${subscriber.name}", Toast.LENGTH_LONG).show()
     }
 }
