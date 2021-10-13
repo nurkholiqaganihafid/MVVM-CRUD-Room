@@ -61,8 +61,12 @@ class SubscriberViewModel(private val repository: SubscriberRepository) : ViewMo
     }
 
     fun insert(subscriber: Subscriber) = viewModelScope.launch {
-        repository.insert(subscriber)
-        statusMessage.value = Event("Subscriber Inserted Successfully")
+        val newRowId = repository.insert(subscriber)
+        if (newRowId > -1) {
+            statusMessage.value = Event("Subscriber Inserted Successfully $newRowId")
+        } else {
+            statusMessage.value = Event("Error Occured")
+        }
     }
 
     fun update(subscriber: Subscriber) = viewModelScope.launch {
