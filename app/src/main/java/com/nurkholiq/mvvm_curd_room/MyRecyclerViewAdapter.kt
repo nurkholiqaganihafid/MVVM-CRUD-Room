@@ -8,9 +8,11 @@ import com.nurkholiq.mvvm_curd_room.databinding.ListItemBinding
 import com.nurkholiq.mvvm_curd_room.db.Subscriber
 
 class MyRecyclerViewAdapter(
-    private val subscribersList: List<Subscriber>,
     private val clickListener: (Subscriber) -> Unit
 ) : RecyclerView.Adapter<MyViewHolder>() {
+
+    private val subscribersList = ArrayList<Subscriber>()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding: ListItemBinding =
@@ -24,6 +26,11 @@ class MyRecyclerViewAdapter(
 
     override fun getItemCount(): Int {
         return subscribersList.size
+    }
+
+    fun setList(subscribers: List<Subscriber>) {
+        subscribersList.clear()
+        subscribersList.addAll(subscribers)
     }
 }
 
